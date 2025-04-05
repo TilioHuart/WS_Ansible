@@ -1,5 +1,0 @@
-- hosts: all
-  become: true
-  roles:
-    - deploy_web_app
-    - deploy_nginx

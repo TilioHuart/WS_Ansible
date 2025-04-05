@@ -1,5 +1,4 @@
 domain_name: "localhost"
 webapp_port: 8001
 app_dir: /etc/app
-
 ansible_user: yuuko

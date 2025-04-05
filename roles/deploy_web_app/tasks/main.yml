@@ -1,17 +1,8 @@
 ---
 # roles/deploy_web_app/tasks/main.yml
 - name: Installer Node.js et npm
-  dnf:
-    name:
-      - nodejs
-      - npm
-    state: present
 
 - name: Créer le répertoire de l'application
-  file:
-    path: "{{ app_dir }}"
-    state: directory
-    mode: '0755'
 
 - name: Copier l'application app.js
   copy:
@@ -20,27 +11,15 @@
     mode: '0755'
 
 - name: Copier le fichier package.json
-  copy:
-    src: "{{ playbook_dir }}/package.json"
-    dest: "{{ app_dir }}/package.json"
-    mode: '0644'
 
 - name: Installer les dépendances Node.js
   command: npm install
   args:
     chdir: "{{ app_dir }}"
 
-- name: Installer les dépendances Node.js
-  command: npm install express
-  args:
-    chdir: "{{ app_dir }}"
+- name: Installer Express
 
 - name: Recharger les unités systemd
-  command: systemctl daemon-reload
 
-- name: Créer le service systemd pour Node.js
-  template:
-    src: webapp.service.j2
-    dest: /etc/systemd/system/webapp.service
-  notify: Restart webapp
+- name: Créer le service systemd pour Node.js (Jinja 2)
 
