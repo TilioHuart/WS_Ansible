@@ -1,0 +1,14 @@
+[Unit]
+Description=Node.js Web Application Service
+After=network.target
+
+[Service]
+User={{ ansible_user }}
+WorkingDirectory={{ app_dir }}
+ExecStart=/usr/bin/npm start
+Restart=always
+Environment=ENV=production
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+- name: Restart webapp
+  systemd:
+    name: webapp.service
+    state: restarted
+    enabled: true

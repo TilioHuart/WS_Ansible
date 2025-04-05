@@ -1,0 +1,36 @@
+- name: Installer Nginx
+  dnf:
+    name: nginx
+    state: present
+  become: true
+
+- name: Créer les répertoires nécessaires pour les sites
+  file:
+    path: "/etc/nginx/sites-available"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Créer le répertoire pour les sites activés
+  file:
+    path: "/etc/nginx/sites-enabled"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Générer la configuration Nginx
+  template:
+    src: app.j2
+    dest: /etc/nginx/sites-available/webapp
+  become: true
+
+- name: Créer un lien symbolique pour activer le site
+  command: "ln -s /etc/nginx/sites-available/webapp /etc/nginx/sites-enabled/"
+  become: true
+  args:
+    creates: /etc/nginx/sites-enabled/webapp
+
+- name: Vérifier la configuration Nginx
+  command: nginx -t
+  become: true
+  notify: Restart webapp
